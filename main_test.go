@@ -74,6 +74,11 @@ func Test_Message(t *testing.T) {
 		{
 			name: "ja-JP",
 			args: args{al: "ja-JP"},
+			want: "こんにちわ",
+		},
+		{
+			name: "en",
+			args: args{al: "en"},
 			want: "Hello",
 		},
 	}
@@ -88,7 +93,7 @@ func Test_Message(t *testing.T) {
 			fmt.Printf("%v\n", tag)
 
 			p := message.NewPrinter(tag)
-			if got := p.Sprint("hello"); got != tt.want {
+			if got := p.Sprintf("hello"); got != tt.want {
 				t.Errorf("xxx() = %v, want %v", got, tt.want)
 			}
 		})
