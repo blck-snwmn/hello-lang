@@ -1,3 +1,0 @@
-[Greet]
-description = "greet"
-other = "こんにちわ {{.Name}}."

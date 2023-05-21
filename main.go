@@ -3,36 +3,33 @@ package main
 import (
 	"embed"
 	_ "embed"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 
-	"github.com/BurntSushi/toml"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
 )
 
-//go:embed i18n/active.*.toml
+//go:embed i18n/active.*.json
 var LocaleFS embed.FS
 
 func main() {
 	bundle := i18n.NewBundle(language.Japanese)
-	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
-	_, err := bundle.LoadMessageFileFS(LocaleFS, "i18n/active.ja.toml")
-	if err != nil {
-		log.Fatal(err)
+	bundle.RegisterUnmarshalFunc("toml", json.Unmarshal)
+	must := func(_ *i18n.MessageFile, err error) {
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
-	bundle.LoadMessageFileFS(LocaleFS, "i18n/active.en.toml")
-	if err != nil {
-		log.Fatal(err)
-	}
+	must(bundle.LoadMessageFileFS(LocaleFS, "i18n/active.ja.json"))
+	must(bundle.LoadMessageFileFS(LocaleFS, "i18n/active.en.json"))
 
 	http.HandleFunc("/greet", func(w http.ResponseWriter, r *http.Request) {
-		langFromValue := r.FormValue("lang")
 		langQuery := r.URL.Query().Get("lang")
 		accept := r.Header.Get("Accept-Language")
-		fmt.Printf("`%s` `%s` `%s`\n", langFromValue, langQuery, accept)
-		localizer := i18n.NewLocalizer(bundle, langFromValue, langQuery, accept)
+
+		localizer := i18n.NewLocalizer(bundle, langQuery, accept)
 		l, err := localizer.Localize(&i18n.LocalizeConfig{
 			MessageID:    "Greet",
 			TemplateData: map[string]string{"Name": "John"},
