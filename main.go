@@ -42,6 +42,24 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(l))
 	})
+	http.HandleFunc("/ask", func(w http.ResponseWriter, r *http.Request) {
+		langQuery := r.URL.Query().Get("lang")
+		accept := r.Header.Get("Accept-Language")
+
+		localizer := i18n.NewLocalizer(bundle, langQuery, accept)
+		l, err := localizer.Localize(&i18n.LocalizeConfig{
+			MessageID:    "AskName",
+			TemplateData: map[string]string{"Name": "John"},
+		})
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(l))
+	})
+
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}

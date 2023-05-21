@@ -3,10 +3,5 @@
     "description": "what your name",
     "hash": "sha1-8c4677717b2f236cf612aa082a066964a2375734",
     "other": "what your name?"
-  },
-  "Greet": {
-    "description": "greet",
-    "hash": "sha1-948c13161e40e1726ba16024549c8ceb88ecb83a",
-    "other": "Hello {{.Name}}."
   }
 }

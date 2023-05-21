@@ -1,7 +1,10 @@
-[
-    {
-        "id": "Greet",
-        "description": "greet",
-        "other": "こんにちわ {{.Name}}."
-    }
-]
+{
+  "AskName": {
+    "description": "what your name",
+    "other": "あなたの名前はなんですか？"
+  },
+  "Greet": {
+    "description": "greet",
+    "other": "こんにちわ {{.Name}}."
+  }
+}
