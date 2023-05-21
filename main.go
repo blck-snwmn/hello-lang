@@ -40,7 +40,7 @@ func main() {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(l))
+		_, _ = w.Write([]byte(l))
 	})
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
