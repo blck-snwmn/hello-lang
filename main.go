@@ -31,8 +31,8 @@ func main() {
 
 		localizer := i18n.NewLocalizer(bundle, langQuery, accept)
 		l, err := localizer.Localize(&i18n.LocalizeConfig{
-			MessageID:    "Greet",
-			TemplateData: map[string]string{"Name": "John"},
+			DefaultMessage: Greet,
+			TemplateData:   map[string]string{"Name": "John"},
 		})
 		if err != nil {
 			log.Println(err)
@@ -48,8 +48,8 @@ func main() {
 
 		localizer := i18n.NewLocalizer(bundle, langQuery, accept)
 		l, err := localizer.Localize(&i18n.LocalizeConfig{
-			MessageID:    "AskName",
-			TemplateData: map[string]string{"Name": "John"},
+			DefaultMessage: AskName,
+			TemplateData:   map[string]string{"Name": "John"},
 		})
 		if err != nil {
 			log.Println(err)

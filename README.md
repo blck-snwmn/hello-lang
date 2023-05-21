@@ -1,6 +1,6 @@
 ## Run
 ```bash
-go run main.go
+$ go run main.go message.go 
 ```
 
 ```bash
