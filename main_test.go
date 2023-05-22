@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 
 	"golang.org/x/text/language"
-	"golang.org/x/text/language/display"
 	"golang.org/x/text/message"
 )
 
-var matcher = language.NewMatcher([]language.Tag{language.Japanese, language.English})
+var languages = []language.Tag{language.Japanese, language.English}
+var matcher = language.NewMatcher(languages)
 
 func Test_ParseTag(t *testing.T) {
 	type args struct {
@@ -18,30 +17,29 @@ func Test_ParseTag(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want string
+		want language.Tag
 	}{
 		{
 			name: "ja",
 			args: args{al: "ja"},
-			want: "日本語",
+			want: language.Japanese,
 		},
 		{
 			name: "ja-JP",
 			args: args{al: "ja-JP"},
-			want: "日本語",
+			want: language.Japanese,
+		},
+		{
+			name: "en",
+			args: args{al: "en"},
+			want: language.English,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tags, _, err := language.ParseAcceptLanguage(tt.args.al)
-			if err != nil {
-				t.Fatal(err)
-			}
-			fmt.Printf("%v\n", tags)
-			tag, _, _ := matcher.Match(tags...)
-			fmt.Printf("%v\n", tag)
+			_, i := language.MatchStrings(matcher, tt.args.al)
 
-			if got := display.Self.Name(tag); got != tt.want {
+			if got := languages[i]; got != tt.want {
 				t.Errorf("xxx() = %v, want %v", got, tt.want)
 			}
 		})
@@ -84,14 +82,7 @@ func Test_Message(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tags, _, err := language.ParseAcceptLanguage(tt.args.al)
-			if err != nil {
-				t.Fatal(err)
-			}
-			fmt.Printf("%v\n", tags)
-			tag, _, _ := matcher.Match(tags...)
-			fmt.Printf("%v\n", tag)
-
+			tag, _ := language.MatchStrings(matcher, tt.args.al)
 			p := message.NewPrinter(tag)
 			if got := p.Sprintf("hello"); got != tt.want {
 				t.Errorf("xxx() = %v, want %v", got, tt.want)
