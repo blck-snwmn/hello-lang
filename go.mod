@@ -1,6 +1,6 @@
 module github.com/blck-snwmn/hello-lang
 
-go 1.26.0
+go 1.27.0
 
 require golang.org/x/text v0.42.0
 
